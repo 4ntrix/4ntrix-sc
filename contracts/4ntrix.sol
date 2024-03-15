@@ -17,6 +17,7 @@ contract Antrix is ERC721, Ownable {
         string time;
         string location;
         string ipfsImageHash;
+        bool markedattended; // Added markedattended parameter
     }
 
     struct User {
@@ -37,7 +38,8 @@ contract Antrix is ERC721, Ownable {
         string date,
         string time,
         string location,
-        string ipfsImageHash
+        string ipfsImageHash,
+        bool markedattended
     );
     event TicketsPurchased(address indexed buyer, uint256 indexed occasionId);
     event AttendanceMarked(
@@ -75,7 +77,8 @@ contract Antrix is ERC721, Ownable {
         string memory _date,
         string memory _time,
         string memory _location,
-        string memory _ipfsImageHash
+        string memory _ipfsImageHash,
+        bool _markedattended
     ) public onlyAdminOrOwner {
         totalOccasions++;
         occasions[totalOccasions] = Occasion(
@@ -86,7 +89,8 @@ contract Antrix is ERC721, Ownable {
             _date,
             _time,
             _location,
-            _ipfsImageHash
+            _ipfsImageHash,
+            _markedattended
         );
 
         emit OccasionListed(
@@ -97,7 +101,8 @@ contract Antrix is ERC721, Ownable {
             _date,
             _time,
             _location,
-            _ipfsImageHash
+            _ipfsImageHash,
+            _markedattended
         );
     }
 
@@ -144,6 +149,7 @@ contract Antrix is ERC721, Ownable {
         );
 
         hasBought[_id][_attendee] = true;
+        occasions[_id].markedattended = true;   
 
         emit AttendanceMarked(_attendee, _id);
     }
